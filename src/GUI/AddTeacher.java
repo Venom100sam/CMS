@@ -1,6 +1,8 @@
 package GUI;
 
 import java.awt.EventQueue;
+
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import com.mysql.cj.jdbc.PreparedStatement;
@@ -14,7 +16,10 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.event.ActionEvent;
+ 
 
 public class AddTeacher extends JFrame {
 	/**
@@ -24,6 +29,10 @@ public class AddTeacher extends JFrame {
 	private JTextField nameField;
 	private JTextField efield;
 	private JTextField passwordField;
+	private JTextField MT1;
+	private JTextField MT2;
+	private JTextField MT3;
+	private JTextField MT4;
 
 	/**
 	 * Launch the application.
@@ -45,17 +54,18 @@ public class AddTeacher extends JFrame {
 	 * Create the frame.
 	 */
 	public AddTeacher() {
+		Map obj=new HashMap();    
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 707, 292);
 		getContentPane().setLayout(null);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(0, 0, 436, 263);
+		layeredPane.setBounds(0, 0, 669, 398);
 		getContentPane().add(layeredPane);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 436, 253);
+		panel.setBounds(0, 0, 906, 527);
 		layeredPane.add(panel);
 		panel.setLayout(null);
 		
@@ -63,7 +73,7 @@ public class AddTeacher extends JFrame {
 		lblAddTeacher.setBackground(Color.GRAY);
 		lblAddTeacher.setForeground(Color.BLACK);
 		lblAddTeacher.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 15));
-		lblAddTeacher.setBounds(166, 30, 106, 24);
+		lblAddTeacher.setBounds(78, 33, 106, 24);
 		panel.add(lblAddTeacher);
 		
 		JLabel lblNewLabel_1 = new JLabel("Name");
@@ -96,14 +106,23 @@ public class AddTeacher extends JFrame {
 		JButton btnNewButton = new JButton("Add");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String query="INSERT INTO `auth` ( `email`, `password`, `role`, `name`) VALUES (?,?, ?, ?);";
+				
+				
+				
+				String query="INSERT INTO `auth` ( `email`, `password`, `role`, `name`,`modules`) VALUES (?,?, ?, ?);";
 				try {
+					obj.put("m1",MT1.getText());
+					obj.put("m2",MT2.getText());
+					obj.put("m3",MT3.getText());
+					obj.put("m4",MT4.getText());
 					Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/course_management_system", "root", "");
-					PreparedStatement pst=(PreparedStatement) con.prepareStatement(query);
+					java.sql.PreparedStatement pst=(PreparedStatement) con.prepareStatement(query);
 					pst.setString(1,efield.getText());
 					pst.setString(2,passwordField.getText());
 					pst.setString(3,"teacher");
 					pst.setString(4,nameField.getText());
+					pst.setString(5,obj.toString());
+					
 					pst.execute();
 					JOptionPane.showMessageDialog(null, "Sucessfully added");
 				} catch (Exception e1) {
@@ -112,7 +131,45 @@ public class AddTeacher extends JFrame {
 				}
 			
 			}});
-		btnNewButton.setBounds(164, 205, 85, 21);
+		btnNewButton.setBounds(63, 206, 621, 21);
 		panel.add(btnNewButton);
+		
+		MT1 = new JTextField();
+		MT1.setColumns(10);
+		MT1.setBounds(322, 101, 166, 19);
+		panel.add(MT1);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("Module1");
+		lblNewLabel_1_1.setBounds(322, 81, 106, 13);
+		panel.add(lblNewLabel_1_1);
+		
+		JLabel lblNewLabel_1_1_1 = new JLabel("Module2");
+		lblNewLabel_1_1_1.setBounds(518, 81, 106, 13);
+		panel.add(lblNewLabel_1_1_1);
+		
+		MT2 = new JTextField();
+		MT2.setColumns(10);
+		MT2.setBounds(518, 101, 166, 19);
+		panel.add(MT2);
+		
+		JLabel lblNewLabel_1_1_1_1 = new JLabel("Module3");
+		lblNewLabel_1_1_1_1.setBounds(322, 132, 106, 13);
+		panel.add(lblNewLabel_1_1_1_1);
+		
+		MT3 = new JTextField();
+		MT3.setColumns(10);
+		MT3.setBounds(322, 152, 166, 19);
+		panel.add(MT3);
+		
+		JLabel lblNewLabel_1_1_1_2 = new JLabel("Module3");
+		lblNewLabel_1_1_1_2.setBounds(518, 127, 106, 13);
+		panel.add(lblNewLabel_1_1_1_2);
+		
+		MT4 = new JTextField();
+		MT4.setColumns(10);
+		MT4.setBounds(518, 147, 166, 19);
+		panel.add(MT4);
 	}
 }
+
+
